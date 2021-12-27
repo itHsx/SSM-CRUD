@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Success</title>
+    <!--引入 jQuery-->
+    <script th:src="@{/} + 'static/js/jQuery3.6.0.mini.js'"></script>
+    <!--引入 BootStrap-->
+    <script th:src="@{/} + 'static/js/bootstrap.min.js'"></script>
+    <link rel="stylesheet" th:inline="css" th:href="@{/} + 'static/css/bootstrap.min.css'">
+</head>
+<body>
+
+<!--用 thymeleaf 获取web的根路径-->
+<input type="hidden" th:value="@{/}" id="webPath"><br>
+
+<center>
+    <p th:text="${session.manager.getUsername()}+'欢迎您'"></p>
+    <a th:href="@{list}">查看所有员工信息</a>
+</center>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>EmployeeList</title>
+    <!--引入 jQuery-->
+    <script th:src="@{/} + 'static/js/jQuery3.6.0.mini.js'"></script>
+    <!--引入 list.js-->
+    <script th:src="@{/} + 'static/js/list.js'"></script>
+    <!--引入 BootStrap-->
+    <script th:src="@{/} + 'static/js/bootstrap.min.js'"></script>
+    <link rel="stylesheet" th:inline="css" th:href="@{/} + 'static/css/bootstrap.min.css'">
+    <!--引入 list.css-->
+    <link rel="stylesheet" th:inline="css" th:href="@{/} + 'static/css/list.css'">
+</head>
+<body>
+
+<div class="row">
+    <input type="hidden" th:onclick="@{'location.href=\\'' + ${#httpServletRequest.getContextPath()}'}"
+           id="webPath"><br>
+</div>
+
+<!--员工修改模态框-->
+<!-- empUpdateModel -->
+<div class="modal fade" id="empUpdateModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">员工修改</h4>
+            </div>
+            <div class="modal-body">
+
+                <!--模态框中显示的内容：表单-->
+                <form class="form-horizontal" id="update_emp_form">
+                    <!--empName-->
+                    <div class="form-group">
+                        <label for="empName_update_static" class="col-sm-2 control-label">empName</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" readonly
+                                   name="empName" id="empName_update_static"
+                                   placeholder="Your Name">
+                            <span id="empName_update_static_errorMsg" class="help-block"></span>
+                        </div>
+                    </div>
+                    <!--email-->
+                    <div class="form-group">
+                        <label for="email_update_input" class="col-sm-2 control-label">email</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="email" id="email_update_input"
+                                   placeholder="email@itHsx.com">
+                            <span id="email_update_input_errorMsg" class="help-block"></span>
+                        </div>
+                    </div>
+                    <!--gender-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">gender</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="gender1_update_input" value="M" checked="checked">
+                                男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="gender2_update_input" value="F"> 女
+                            </label>
+                        </div>
+                    </div>
+                    <!--dept-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">dept</label>
+                        <div class="col-sm-4">
+                            <!--部门提交：从数据库实时查询部门-->
+                            <select class="form-control" name="dId" id="select_update_deptName"></select>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="emp_update_btn">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--员工添加模态框-->
+<!-- empAddModel -->
+<div class="modal fade" id="empAddModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">员工添加</h4>
+            </div>
+            <div class="modal-body">
+
+                <!--模态框中显示的内容：表单-->
+                <form class="form-horizontal" id="save_emp_form">
+                    <!--empName-->
+                    <div class="form-group">
+                        <label for="empName_add_input" class="col-sm-2 control-label">empName</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="empName" id="empName_add_input"
+                                   placeholder="Your Name">
+                            <span id="empName_add_input_errorMsg" class="help-block"></span>
+                        </div>
+                    </div>
+                    <!--email-->
+                    <div class="form-group">
+                        <label for="email_add_input" class="col-sm-2 control-label">email</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="email" id="email_add_input"
+                                   placeholder="email@itHsx.com">
+                            <span id="email_add_input_errorMsg" class="help-block"></span>
+                        </div>
+                    </div>
+                    <!--gender-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">gender</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="gender1_add_input" value="M" checked="checked"> 男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="gender2_add_input" value="F"> 女
+                            </label>
+                        </div>
+                    </div>
+                    <!--dept-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">dept</label>
+                        <div class="col-sm-4">
+                            <!--部门提交：从数据库实时查询部门-->
+                            <select class="form-control" name="dId" id="select_deptName"></select>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="emp_save_btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--搭建显示页面-->
+<div class="container">
+
+    <!--标题-->
+    <div class="row">
+        <div class="col-md-12">
+            <h2>SSM-CRUD</h2>
+        </div>
+    </div>
+    <!--标题-->
+    <div class="row">
+        <div class="col-md-12">
+            <h3>&nbsp;&nbsp;&nbsp;员工列表</h3>
+        </div>
+    </div>
+
+    <!--按钮-->
+    <div class="row">
+        <div class="col-md-4 col-md-offset-8">
+            <button class="btn btn-primary" id="emp_add_model_btn">新增</button>
+            <button class="btn btn-danger" id="emp_del_model_btn">删除选中</button>
+        </div>
+    </div>
+
+    <!--显示表格数据-->
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-condensed table-hover" id="emp_table">
+                <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" id="check_all">
+                    </th>
+                    <th>empId</th>
+                    <th>empName</th>
+                    <th>gender</th>
+                    <th>email</th>
+                    <th>deptName</th>
+                    <th>operate</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--显示分页信息-->
+    <div class="row">
+
+        <!--分页条信息-->
+        <div class="col-md-8" id="NavigationBar"></div>
+
+        <!--分页文字信息-->
+        <div class="col-md-4" id="page_info_area"></div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
